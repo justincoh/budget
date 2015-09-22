@@ -1,0 +1,26 @@
+{
+  "name": "budget",
+  "version": "1.0.0",
+  "description": "###Found US historical budget data from the [Whitehouse] >It's rich and just asking for some good data viz",
+  "main": "temp.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node bin/www"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/justincoh/budget.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/justincoh/budget/issues"
+  },
+  "homepage": "https://github.com/justincoh/budget#readme",
+  "dependencies": {
+    "body-parser": "^1.14.0",
+    "ejs": "^2.3.4",
+    "express": "^4.13.3",
+    "morgan": "^1.6.1"
+  }
+}
