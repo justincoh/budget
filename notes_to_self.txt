@@ -1,1 +1,0 @@
-pipenv shell - to init environment
