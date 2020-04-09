@@ -30,15 +30,22 @@ def csv_to_dict_keyed_by_dept(filename):
 # e.g. { "Department of Agriculture": {"1960": "34721.0"} -> {"1960": 34721} }
 # or { "1960": {"Department of Agriculture": "34721.0"} -> {"Department of Agriculture": 34721} }
 def convert_to_integers(data):
+  # copy data so we can remove bad values without RuntimeError during loop
+  new_data = {}
   for key in data:
+    new_data[key] = {}
     for subkey, value in data[key].items():
+      # Strip the random "TQ" k:v pairs
+      if subkey == "TQ":
+        continue
       try:
         newval = int(float(value))
       except ValueError:
         newval = 0
-      data[key][subkey] = newval
 
-  return data
+      new_data[key][subkey] = newval
+
+  return new_data
 
 def write_dict_to_json(data, filename):
   with open(filename, 'w') as outfile:

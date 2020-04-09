@@ -1,3 +1,22 @@
+// relies on data being global
+function generateDataset (key) {
+  const randomColor = '#'+Math.floor(Math.random()*16777215).toString(16);
+  return {
+    label: key,
+    fill: false,
+    backgroundColor: randomColor,
+    borderColor: randomColor,
+    data: Object.values(data[key]),
+  }
+}
+
+const depts = [
+  // "Department of Defense--Military Programs",
+  "Department of Education",
+  "Department of Homeland Security",
+  "National Aeronautics and Space Administration",
+];
+
 function makeChart (data) {
   const one = data["Total outlays"]; // for dev
 
@@ -6,11 +25,14 @@ function makeChart (data) {
     type: "line",
     data: {
       labels: Object.keys(one),
-      datasets: [{
-      label: "Test dataset",
-        backgroundColor: "rgb(143, 0, 143)",
-        data: Object.values(one),
-      }],
+      datasets: depts.map(dep => generateDataset(dep)),
+      // datasets: [{
+      //   label: "Test dataset",
+      //   fill: false,
+      //   backgroundColor: "purple",
+      //   borderColor: "purple",
+      //   data: Object.values(one),
+      // }],
     },
     options: {
       responsive: true,
