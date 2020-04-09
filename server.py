@@ -13,7 +13,7 @@ def index():
 @app.route('/data/<filename>')
 def get_json_data(filename):
   # grab json file
-  with open(filename, 'r') as infile:
+  with open('data/{}'.format(filename), 'r') as infile:
     data = infile.read()
 
   return jsonify(data)

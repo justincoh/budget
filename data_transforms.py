@@ -36,6 +36,7 @@ def convert_to_integers(data):
     new_data[key] = {}
     for subkey, value in data[key].items():
       # Strip the random "TQ" k:v pairs
+      # for year_keyed, just delete the key manually in the shell
       if subkey == "TQ":
         continue
       try:
