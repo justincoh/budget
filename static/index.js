@@ -61,8 +61,32 @@ function generateBarData (yearData, key) {
 
 // why does Chartjs assume bar chart data is going to be time series?
 // That's not the point of bar charts
-// I think D3 is probably a better choice for that one :(
+// d3 might be a better choice here
 function makeBarChartForYear(data) {
+  const ctx = document.getElementById("chart");
+  const yearData = data["2018"];
+
+  return new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels: DEPARTMENTS,
+      datasets: [{
+        label: DEPARTMENTS[0],
+        backgroundColor: getRandomColor(),
+        // data: [0, 5, 10, 12, 14],
+        data: [0, 3, 4, 5],
+      }/*, {
+        label: DEPARTMENTS[1],
+        backgroundColor: getRandomColor(),
+        data: [yearData[DEPARTMENTS[1]]],
+      }, {
+        label: DEPARTMENTS[2],
+        backgroundColor: getRandomColor(),
+        data: [yearData[DEPARTMENTS[2]]],
+      } */
+    ]
+    }
+  })
 
 }
 
@@ -98,11 +122,11 @@ document.addEventListener("DOMContentLoaded", () => {
   //     window.data = data;
   //     makeChart(data);
   //   });
-  fetch("data/outlays_by_agency_year_keyed.json")
-    .then(data => data.json())
-    .then((blob) => {
-      const data = JSON.parse(blob);
-      window.data = data;
-      makeBarChartForYear(data);
-    });
+  // fetch("data/outlays_by_agency_year_keyed.json")
+  //   .then(data => data.json())
+  //   .then((blob) => {
+  //     const data = JSON.parse(blob);
+  //     window.data = data;
+  //     makePolarAreaChartForYear(data);
+  //   });
 });
