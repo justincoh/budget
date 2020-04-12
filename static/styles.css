@@ -2,9 +2,10 @@
   display: flex;
   justify-content: center;
 }
-
+svg {
+  overflow: visible;
+}
 .barchart {
   overflow: visible;
 }
-
 .bar { fill: steelblue; }

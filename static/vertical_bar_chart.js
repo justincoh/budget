@@ -6,8 +6,8 @@ const DEPARTMENTS2 = [
 ];
 
 document.addEventListener("DOMContentLoaded", () => {
-  fetchData("data/outlays_by_agency_year_keyed.json")
-    .then(makeBarChart);
+  // fetchData("data/outlays_by_agency_year_keyed.json")
+  //   .then(makeBarChart);
 });
 
 // this is a pretty good example https://bl.ocks.org/d3noob/8952219
@@ -27,7 +27,7 @@ function makeBarChart(barData) {
   // append the svg object
   // append a 'group' element to 'svg'
   // moves the 'group' element to the top left margin
-  const svg = d3.select(".d3-chart-container")
+  const svg = d3.select(".vertical-bar-chart")
     .append("svg")
     .attr("class", "barchart")
     .attr("width", width + margin.left + margin.right)
