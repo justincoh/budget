@@ -104,8 +104,11 @@ function dataUpdater(newData) {
     .call(d3.axisLeft(y));
 
   bars.exit().remove();
+  bars
 
   bars
+    .transition()
+    .duration(500)
     .attr("y", d => y(d.name))
     .attr("height", y.bandwidth())
     .attr("width", d => x(d.value))
