@@ -12,6 +12,13 @@ const fetchData = (filename) => {
     })
 }
 
+const dollarFormatter = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD',
+});
+
+const formatDollars = (num) => dollarFormatter.format(num).replace(".00", "");
+
 function getRandomColor () { return '#'+Math.floor(Math.random()*16777215).toString(16); }
 // relies on data being global
 function generateDataset (key) {
