@@ -96,17 +96,17 @@ function dataUpdater(newData) {
   const data = formatData(newData[2018], toggle);
   toggle = !toggle;
 
-  // Make the changes
-  const bars = svg.selectAll(".bar")   // change the line
-    .data(data);
-
   // update axis
   y.domain(data.map(d => d.name));
   svg.select(".y-axis")
     .call(d3.axisLeft(y));
 
-  bars.exit().remove();
-  bars.enter().append("rect")
+  // Make the changes
+  const bars = svg.selectAll(".bar")   // change the line
+    .data(data);
+
+  // Join handles entering and exiting
+  bars.join("rect")
     .transition()
     .duration(500)
     .attr("class", "bar")
@@ -114,17 +114,11 @@ function dataUpdater(newData) {
     .attr("y", d => y(d.name))
     .attr("height", y.bandwidth());
 
-  bars
-    .transition()
-    .duration(500)
-    .attr("y", d => y(d.name))
-    .attr("height", y.bandwidth())
-    .attr("width", d => x(d.value))
-
   svg.selectAll(".label")
     .selectAll("text")
     .data(data)
     .join("text")
+    .transition().duration(500)
     .attr("x", d => x(d.value) + 4)
     .attr("y", (d) => y(d.name) + y.bandwidth() / 2)
     .attr("dy", "0.35em")
