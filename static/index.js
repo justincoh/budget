@@ -1,3 +1,17 @@
+// stick this on the window so I can share it
+const fetchData = (filename) => {
+  return fetch(filename)
+    .then(data => data.json())
+    .then((blob) => {
+      const data = JSON.parse(blob);
+      // attach to window for debugging/testing
+      window.data = data;
+
+      // return for other methods
+      return data;
+    })
+}
+
 function getRandomColor () { return '#'+Math.floor(Math.random()*16777215).toString(16); }
 // relies on data being global
 function generateDataset (key) {
@@ -116,17 +130,6 @@ function makePolarAreaChartForYear(data) {
 
 document.addEventListener("DOMContentLoaded", () => {
   // fetch("data/outlays_by_agency_dept_keyed.json")
-  //   .then(data => data.json())
-  //   .then((blob) => {
-  //     const data = JSON.parse(blob);
-  //     window.data = data;
-  //     makeChart(data);
-  //   });
-  // fetch("data/outlays_by_agency_year_keyed.json")
-  //   .then(data => data.json())
-  //   .then((blob) => {
-  //     const data = JSON.parse(blob);
-  //     window.data = data;
-  //     makePolarAreaChartForYear(data);
-  //   });
+  // fetchData("data/outlays_by_agency_year_keyed.json")
+  //     .then(data => makePolarAreaChartForYear(data))
 });
