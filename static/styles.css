@@ -2,4 +2,9 @@
   display: flex;
   justify-content: center;
 }
+
+.barchart {
+  overflow: visible;
+}
+
 .bar { fill: steelblue; }

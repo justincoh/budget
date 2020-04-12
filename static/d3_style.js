@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
     .then(data => data.json())
     .then((blob) => {
       const data = JSON.parse(blob);
-      // window.data = data;
+      window.data = data;
       makeBarChart(data);
     });
 });
@@ -51,34 +51,47 @@ function makeBarChart(barData) {
   let data = Object.entries(barData["2018"]);
 
   // filter the things you care about
-  data = data.filter(el => DEPARTMENTS.includes(el[0]));
+  // data = data.filter(el => DEPARTMENTS.includes(el[0]));
+  // data = data.filter(el => el[1] > 0 && !["Total outlays", "Department of Health and Human Services"].includes(el[0]));
+  data = data.filter(el => el[1] > 0 && !["Total outlays"].includes(el[0]));
+
+  // sort biggest first
+  data.sort((a, b) => b[1] - a[1])
 
   // Scale the range of the data in the domains
-  x.domain(data.map(function(d) { return d[0]; }))
+  x.domain(data.map(function(d) { return d[0]; }));
   y.domain([0, d3.max(data, function(d) { return d[1] })]);
 
-  // JUSTIN YOU STOPPED HERE
   // append the rectangles for the bar chart
   svg.selectAll(".bar")
     .data(data)
     .enter()
     .append("rect")
     .attr("class", "bar")
-    .attr("x", function(d) { return x(d[0]); })
+    .attr("x", d => x(d[0]))
     .attr("width", x.bandwidth())
-    .attr("y", function(d) { return y(d[1]); })
-    .attr("height", function(d) {
-      console.log('d: ', d);
-      console.log('y(d[1]): ', y(d[1]));
-      return height - y(d[1]);
-    });
+    .attr("y", d => y(d[1]))
+    .attr("y", d => y(d[1]))
+    .attr("height", d => height - y(d[1]));
 
   // add the x Axis
   svg.append("g")
     .attr("transform", "translate(0," + height + ")")
-    .call(d3.axisBottom(x));
+    .attr("class", "xaxis")
+    .call(d3.axisBottom(x))
+    .selectAll("text")
+    .style("text-anchor", "start")
+    .attr("transform", "rotate(90)")
+    .attr("dx", "1em")
+    .attr("dy", "0");
 
   // add the y Axis
   svg.append("g")
-     .call(d3.axisLeft(y));
+     .call(d3.axisLeft(y))
+     .append("text")
+      .attr("transform", "rotate(90)")
+      .attr("y", 6)
+      .attr("dy", "-1em")
+      .style("text-anchor", "start").style("fill", "currentColor")
+      .text("millions of dollars");
 }
