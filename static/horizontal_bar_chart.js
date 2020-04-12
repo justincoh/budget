@@ -91,8 +91,10 @@ function horizontalBarChart(fullData, year) {
   return svg
 }
 
+let toggle = true;
 function dataUpdater(newData) {
-  const data = formatData(newData[2018], true);
+  const data = formatData(newData[2018], toggle);
+  toggle = !toggle;
 
   // Make the changes
   const bars = svg.selectAll(".bar")   // change the line
@@ -104,7 +106,13 @@ function dataUpdater(newData) {
     .call(d3.axisLeft(y));
 
   bars.exit().remove();
-  bars
+  bars.enter().append("rect")
+    .transition()
+    .duration(500)
+    .attr("class", "bar")
+    .attr("width", d => x(d.value))
+    .attr("y", d => y(d.name))
+    .attr("height", y.bandwidth());
 
   bars
     .transition()
@@ -112,11 +120,6 @@ function dataUpdater(newData) {
     .attr("y", d => y(d.name))
     .attr("height", y.bandwidth())
     .attr("width", d => x(d.value))
-  // bars.enter().append("rect")
-  //   .attr("class", "bar")
-  //   .attr("width", d => x(d.value))
-  //   .attr("y", d => y(d.name))
-  //   .attr("height", y.bandwidth());
 
   svg.selectAll(".label")
     .selectAll("text")
