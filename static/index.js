@@ -3,13 +3,32 @@ const fetchData = (filename) => {
   return fetch(filename)
     .then(data => data.json())
     .then((blob) => {
-      const data = JSON.parse(blob);
+      const DATA_GLOBAL = JSON.parse(blob);
       // attach to window for debugging/testing
-      window.data = data;
+      window.DATA_GLOBAL = DATA_GLOBAL;
+      window.DATA_HELPER = createDataHelper(DATA_GLOBAL);
 
       // return for other methods
-      return data;
+      return DATA_GLOBAL;
     })
+}
+
+// { 2018: { DoD: { name: "DoD", value: 12345 }, Legislative: { name: "", value: 123 }} ...}
+function createDataHelper(rawData) {
+  const helper = {};
+  for (let key in rawData) {
+    console.log()
+    helper[key] = {};
+    const yearData = rawData[key];
+    Object.entries(yearData).map((pair) => {
+      helper[key][pair[0]] = {
+        name: pair[0],
+        value: pair[1]
+      }
+    });
+  }
+
+  return helper;
 }
 
 const dollarFormatter = new Intl.NumberFormat('en-US', {

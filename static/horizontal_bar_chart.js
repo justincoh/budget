@@ -1,8 +1,25 @@
 document.addEventListener("DOMContentLoaded", () => {
   fetchData("data/outlays_by_agency_year_keyed.json")
-    .then(data => horizontalBarChart(data, 2018));
+    .then(data => {
+      horizontalBarChart(data, 2018);
+      return data;
+    })
+    .then(data => window.ALL_CATEGORIES = Object.keys(data[2018]));
 });
 
+const activeFilters = DEPARTMENTS;
+
+// i think you're better off building another supporting data structure off the bat:
+// { DoD: { name: "DoD", value: 12345 }, Legislative: { name: "", value: 123 }}
+// can avoid a lot of array operations that way
+function filterYearData(yearData, departments) {
+  let data = [];
+  Object.entries(yearData).map((pair) => {
+    data.push({ name: pair[0], value: pair[1] });
+  });
+
+  return data.filter(obj => departments.includes(obj.name) && obj.value > 0);
+}
 // for updating data:
 // https://bl.ocks.org/d3noob/7030f35b72de721622b8
 // http://bl.ocks.org/alansmithy/e984477a741bc56db5a5 // maybe this one?
@@ -26,7 +43,7 @@ function formatData(yearData, testFilter) {
 // https://bl.ocks.org/caravinden/eb0e5a2b38c8815919290fa838c6b63b
 function horizontalBarChart(fullData, year) {
   const yearData = fullData[year];
-  const data = formatData(yearData);
+  const data = filterYearData(yearData, DEPARTMENTS);
 
   //set up svg using margin conventions - we'll need plenty of room on the left for labels
   const margin = { top: 15, right: 25, bottom: 15, left: 60 };
@@ -91,10 +108,8 @@ function horizontalBarChart(fullData, year) {
   return svg
 }
 
-let toggle = true;
 function dataUpdater(newData) {
-  const data = formatData(newData[2018], toggle);
-  toggle = !toggle;
+  const data = filterYearData(newData[2018], activeFilters);
 
   // update axis
   y.domain(data.map(d => d.name));
