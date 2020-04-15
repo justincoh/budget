@@ -13,12 +13,14 @@ const activeFilters = DEPARTMENTS;
 // { DoD: { name: "DoD", value: 12345 }, Legislative: { name: "", value: 123 }}
 // can avoid a lot of array operations that way
 function filterYearData(yearData, departments) {
-  let data = [];
+  const data = [];
   Object.entries(yearData).map((pair) => {
     data.push({ name: pair[0], value: pair[1] });
   });
 
-  return data.filter(obj => departments.includes(obj.name) && obj.value > 0);
+  const filtered = data.filter(obj => departments.includes(obj.name) && obj.value > 0);
+
+  return filtered.sort((a,b) => d3.descending(a.value, b.value));
 }
 // for updating data:
 // https://bl.ocks.org/d3noob/7030f35b72de721622b8
@@ -46,9 +48,10 @@ function horizontalBarChart(fullData, year) {
   const data = filterYearData(yearData, DEPARTMENTS);
 
   //set up svg using margin conventions - we'll need plenty of room on the left for labels
+  // figure out the appropriate sizing
   const margin = { top: 15, right: 25, bottom: 15, left: 60 };
-  const width = 960 - margin.left - margin.right,
-    height = 500 - margin.top - margin.bottom;
+  const width = window.innerWidth - margin.left - margin.right,
+    height = window.innerWidth - margin.top - margin.bottom;
 
   // set the ranges
   window.y = d3.scaleBand()
